@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Design For WebSite</title>
+    <style>
+        *{
+            margin: 0 ;
+            padding: 0 ;
+            font-family: sans-serif;
+        }
+        #header{
+         
+            height: 100vh;
+            background: url(websites/images/background.png);
+            background-position: center;
+            background-size: cover;
+        }
+        .container{
+        
+            margin-left:100px;
+            margin-right: 100px;
+        }
+        .logo{
+            margin-top:30px;
+            width: 100px;
+        }
+        .header-text{
+            max-width: 350px;
+            margin-top: 140px;
+        }
+        .header-text h1{
+            font-size: 34px;
+        }
+        .header-text p{
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 22px;
+        }
+       .square{
+        
+        display: inline-block ;
+        height: 12px ;
+        width: 12px ;
+        margin: 15px 0 ;
+        background: #f67c92 ;
+       }
+      .common-btn{
+        
+        padding: 18px 14px ;
+        outline: none;
+        font-size: 22px;
+        font-weight: bold;
+        background: #f67c92;
+      }
+      .line{
+        
+        margin: 72px;
+
+      }
+
+      .line-1{
+        
+        width: 20px ;
+        height:20px ;
+        display: inline-block ;
+        background: #f62c97 ;
+
+      }
+      .line-2{
+    
+        width: 80px ;
+        height: 1px ;
+        display: inline-block ;
+        background: #f62c97 ;
+        margin-left: 8px;
+      }
+      .line-3{
+        
+        width: 60px;
+        height: 1px ;
+        display: inline-block ;
+        background: #f62c97 ;
+        margin-left: 8px;
+
+      }
+      .sidenav{
+
+        width: 250px ;
+        height: 100vh ;
+        top:0 ;
+        right:-250px;
+        position:fixed ;
+        background: #f67c92;
+      }
+
+     nav ul li{
+    
+        margin: 50px 20px;
+        list-style: none;
+     }
+     nav ul li a{
+        font-size: larger;
+        color: #fff;
+        text-decoration: none;
+     }
+     #menuBtn{
+    
+        position: fixed;
+        top: 35px;
+        right: 65px;
+        width: 50px;
+        z-index: 2;
+        cursor: pointer;
+     }                                           
+     #about{
+        
+        display: flex ;
+        padding: 100px 0 ;
+        flex-wrap: wrap ;
+        align-items: center ;
+     }
+     .about-left-col{
+        flex-basis: 50%;
+        
+     }
+     .about-left-col img{
+        width: 100%;
+    
+     }
+     .about-right-col{
+        flex-basis: 50%;
+        
+     }
+     .about-text{
+        max-width: 500px ;
+        margin-right:100px ;
+        display: inline-block ;   
+        text-align: right;
+     }
+     .about-text h1{
+        
+        margin: 50px 0 10px;
+        font-size: 28px;
+        font-style: italic ;
+     }
+     .about-text h2{
+        font-size:20px ;
+        font-style: italic;
+        
+     }
+     .social-links img{
+       
+        width: 42px;
+        height: 52px;
+        margin-right: 22px;
+        cursor: pointer;
+        
+
+     }
+     .social-links{
+        bottom: -71px;
+     }
+     
+   
+    </style>
+</head>
+
+<body>
+    <section id="header">
+        <div class="container">
+            <img src="websites/images/logo.png" alt="" class="logo">
+            <div class="header-text">
+                <h1>The Purpose To Teach <br> To,Bring Learning To People</h1>
+                <span class="square"></span>
+                <p>There are many variations of passages of lorem ipsum available,but the majority have suffered  alteration in some form by injected humour,or randomised words which don't look even slightly believable</p>
+                <button class="common-btn">Read More</button>
+               
+                </div>
+                <div class="line">
+                    <div class="line-1"></div><br>
+                    <div class="line-2"></div><br>
+                    <div class="line-3"></div>
+                </div>
+                <div class="social-links">
+                    <img src="websites/images/facebook.png" alt="">
+                    <img src="websites/images/instagram.png" alt="">
+                    <img src="websites/images/twitter.png" alt="">
+                </div>
+            </div>
+        </div>
+   
+
+    </section>
+    <nav class="sidenav">
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Features</a></li>
+            <li><a href="#">Courses</a></li>
+            <li><a href="#">Offer</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav> 
+    <img src="websites/images/menu.png" id="menuBtn" alt="">
+    <section id="about">
+        <div class="about-left-col">
+        <img src="websites/images/about.png" alt="">
+
+        </div>
+        <div class="about-right-col">
+            <div class="about-text">
+                <h1>About Us</h1>
+                <p>Contrary to popupar belief,Lorem Ipsum is not simply random text.It has roots in a piece of classical Latin literature from 45 BC,making it over 2000 years old.college invirginia,looked up one of the more obcure Latin words,consecteture,from a lorem ipsum passage,and going through the cities of the word in classical literature,discovered the undoubtable source</p>
+                <h2>"Learning is not attained by chance,it must be sourght for with ardor and attended to with diligence"</h2>
+                <h3>-- Abigail Adams---</h3>
+            </div>
+           
+        </div>
+    </section>
+    <script>
+        var menuBtn = document.getElementById("menuBtn");
+        var sidenav = document.getElementById("sidenav");
+
+        sidenav.style.right="-250px";
+        menuBtn. onclick = function(){
+            if(sidenav.style.right=="-250px"){
+                sidenav.style.right="0"
+            }
+            else{
+                sidenav.style.right = "-250px"
+            }
+
+        }
+    </script>
+    
+</body>
+</html>
