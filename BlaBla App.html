@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BlaBla Travels — Discover the World</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --primary: #ff6b6b;
+      --dark: #2d3436;
+      --light: #f5f6fa;
+      --gradient: linear-gradient(135deg, #ff6b6b, #ff8e53);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: var(--dark);
+      background: var(--light);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header / Navbar */
+    header {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+      transition: all 0.4s;
+    }
+
+    header.scrolled {
+      background: white;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--dark);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--dark);
+    }
+
+    /* Hero */
+    .hero {
+      height: 100vh;
+      min-height: 720px;
+      background: var(--gradient), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2340&q=80') center/cover no-repeat;
+      color: white;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: clamp(3.2rem, 8vw, 5.5rem);
+      margin-bottom: 1.2rem;
+      font-weight: 900;
+      line-height: 1.05;
+    }
+
+    .hero p {
+      font-size: 1.4rem;
+      margin-bottom: 2.5rem;
+      opacity: 0.95;
+    }
+
+    .search-box {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 35px 40px;
+      color: #333;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      max-width: 950px;
+      margin: 0 auto;
+    }
+
+    .search-box form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .form-group {
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      font-size: 1rem;
+    }
+
+    .btn {
+      background: var(--gradient);
+      color: white;
+      border: none;
+      padding: 16px 36px;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      grid-column: span 1;
+      align-self: end;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(255,107,107,0.4);
+    }
+
+    /* Sections */
+    section {
+      padding: 100px 0;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 3.2rem;
+      margin-bottom: 1rem;
+      color: var(--dark);
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 1.3rem;
+      color: #666;
+      margin-bottom: 60px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Destinations */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+      transition: all 0.4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-16px);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+    }
+
+    .card img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 24px;
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      font-size: 1.6rem;
+    }
+
+    .price {
+      color: var(--primary);
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin: 12px 0;
+    }
+
+    /* Testimonials */
+    .testimonial {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 40px;
+    }
+
+    .stars {
+      color: #ffd700;
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 80px 0 40px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    footer a {
+      color: #ccc;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .social a {
+      display: inline-block;
+      margin-right: 18px;
+      font-size: 1.6rem;
+    }
+
+    .copyright {
+      text-align: center;
+      padding-top: 40px;
+      border-top: 1px solid #444;
+      font-size: 0.95rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .search-box form {
+        grid-template-columns: 1fr;
+      }
+
+      .btn {
+        grid-column: span 1;
+      }
+    }
+
+    @media (max-width: 600px) {
+      h2 { font-size: 2.4rem; }
+      .hero h1 { font-size: 3.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header id="header">
+    <div class="container">
+      <nav>
+        <a href="#" class="logo">BlaBla Travels</a>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#destinations">Destinations</a></li>
+          <li><a href="#packages">Packages</a></li>
+          <li><a href="#testimonials">Reviews</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <i class="fas fa-bars menu-toggle" id="menuToggle"></i>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1>Discover Your Next Adventure</h1>
+      <p>Handcrafted journeys to the world's most beautiful destinations</p>
+
+      <div class="search-box">
+        <form id="searchForm">
+          <div class="form-group">
+            <label>Where to?</label>
+            <input type="text" placeholder="Paris, Bali, Goa..." required>
+          </div>
+          <div class="form-group">
+            <label>When?</label>
+            <input type="date" required>
+          </div>
+          <div class="form-group">
+            <label>Travelers</label>
+            <select required>
+              <option value="">Select</option>
+              <option>1 Adult</option>
+              <option>2 Adults</option>
+              <option>2 Adults + 1 Child</option>
+              <option>Family (4+)</option>
+            </select>
+          </div>
+          <button type="submit" class="btn">Search & Book →</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="destinations">
+    <div class="container">
+      <h2>Popular Destinations</h2>
+      <p class="subtitle">Explore the places loved by thousands of travelers every month</p>
+
+      <div class="grid">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1540979388789-7cee28a1cdc9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Maldives">
+          <div class="card-content">
+            <h3>Maldives</h3>
+            <p>Overwater villas • Crystal waters</p>
+            <div class="price">₹89,999 <small>/ person</small></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Switzerland">
+          <div class="card-content">
+            <h3>Switzerland</h3>
+            <p>Alps • Lakes • Chocolate</p>
+            <div class="price">₹1,29,999 <small>/ person</small></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Japan">
+          <div class="card-content">
+            <h3>Japan</h3>
+            <p>Cherry blossoms • Temples</p>
+            <div class="price">₹1,19,999 <small>/ person</small></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1585208798174-6cedd78e0198?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dubai">
+          <div class="card-content">
+            <h3>Dubai</h3>
+            <p>Luxury • Desert Safari</p>
+            <div class="price">₹74,999 <small>/ person</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#fff;">
+    <div class="container">
+      <h2>Why BlaBla Travels?</h2>
+      <p class="subtitle">What makes us the preferred choice for thousands of wanderers</p>
+
+      <div class="grid">
+        <div class="card" style="text-align:center; padding:50px 30px;">
+          <i class="fas fa-shield-alt" style="font-size:4rem; color:var(--primary); margin-bottom:20px;"></i>
+          <h3>100% Safe & Secure</h3>
+          <p>Trusted by 50,000+ happy customers</p>
+        </div>
+        <div class="card" style="text-align:center; padding:50px 30px;">
+          <i class="fas fa-headset" style="font-size:4rem; color:var(--primary); margin-bottom:20px;"></i>
+          <h3>24×7 Support</h3>
+          <p>Instant help via call / WhatsApp</p>
+        </div>
+        <div class="card" style="text-align:center; padding:50px 30px;">
+          <i class="fas fa-wallet" style="font-size:4rem; color:var(--primary); margin-bottom:20px;"></i>
+          <h3>Best Price Guarantee</h3>
+          <p>Lowest prices or we refund difference</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials" style="background:var(--light);">
+    <div class="container">
+      <h2>What Our Travelers Say</h2>
+      <p class="subtitle">Real stories from real adventures</p>
+
+      <div class="testimonial">
+        <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <p>"Best trip ever! Everything was perfectly planned. Maldives package was value for money. Thank you Vitthal Travels!"</p>
+        <h4>— Priya Sharma, Delhi</h4>
+      </div>
+
+      <div class="testimonial">
+        <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <p>"Switzerland tour was magical. Guides were excellent, hotels were amazing. Highly recommended!"</p>
+        <h4>— Rohan Mehta, Mumbai</h4>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3 style="font-size:1.8rem; margin-bottom:20px;">BlaBla Travels</h3>
+          <p>Turning your travel dreams into beautiful memories since 2015.</p>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <a href="#">About Us</a>
+          <a href="#">Our Packages</a>
+          <a href="#">Destinations</a>
+          <a href="#">Blog</a>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <p>Delhi, India</p>
+          <p>+91 98765 43210</p>
+          <p>hello@BlaBlatravels.com</p>
+        </div>
+        <div class="social">
+          <h4>Follow Us</h4>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+
+      <div class="copyright">
+        © 2026 BlaBla Travels. All Rights Reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Fake search alert (real mein backend call hoga)
+    document.getElementById('searchForm').addEventListener('submit', e => {
+      e.preventDefault();
+      alert("Searching best deals for you... (this is demo — connect backend for real booking)");
+    });
+  </script>
+</body>
+</html>
