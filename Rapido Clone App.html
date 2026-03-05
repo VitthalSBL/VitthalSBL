@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rapido Clone • Prototype</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --primary: #276ef1;
+      --primary-dark: #1e54b7;
+      --green: #00c853;
+      --bg: #0a0e17;
+      --card: #111827;
+      --text: #e5e7eb;
+      --text-light: #9ca3af;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .screen {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      transition: opacity 0.4s, transform 0.4s;
+      background: var(--bg);
+    }
+    .hidden { opacity: 0; pointer-events: none; transform: translateY(20px); }
+
+    header {
+      padding: 14px 16px;
+      background: rgba(17,24,39,0.7);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #1f2937;
+      z-index: 100;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -1px;
+    }
+
+    .map-container {
+      flex: 1;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      position: relative;
+      overflow: hidden;
+    }
+    .fake-map {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1524666041070-9d87656c25bb?w=1200&auto=format&fit=crop&q=80') center/cover;
+      filter: brightness(0.45) contrast(1.15) hue-rotate(190deg);
+    }
+
+    .pickup-drop-card {
+      position: absolute;
+      top: 70px;
+      left: 16px;
+      right: 16px;
+      background: var(--card);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      z-index: 10;
+    }
+    .location-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #1f2937;
+    }
+    .location-row:last-child { border-bottom: none; }
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .pickup .dot { background: var(--green); }
+    .drop .dot { background: #f87171; }
+    .loc-text {
+      flex: 1;
+      font-size: 0.95rem;
+    }
+    .loc-title { font-weight: 600; }
+    .loc-subtitle { font-size: 0.8rem; color: var(--text-light); }
+
+    .vehicles {
+      position: absolute;
+      bottom: 180px;
+      left: 0; right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 0 16px;
+      z-index: 10;
+    }
+    .vehicle-btn {
+      background: var(--card);
+      border: 2px solid transparent;
+      border-radius: 16px;
+      padding: 12px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 110px;
+    }
+    .vehicle-btn.active,
+    .vehicle-btn:hover {
+      border-color: var(--primary);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(39,110,241,0.3);
+    }
+    .vehicle-btn i { font-size: 1.8rem; margin-bottom: 6px; }
+    .fare-estimate {
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: 8px;
+      color: var(--primary);
+    }
+
+    .confirm-btn {
+      position: fixed;
+      bottom: 24px;
+      left: 16px;
+      right: 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 16px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      box-shadow: 0 8px 30px rgba(39,110,241,0.4);
+      cursor: pointer;
+      z-index: 100;
+    }
+    .confirm-btn:active { transform: scale(0.97); }
+
+    .finding-driver {
+      position: absolute;
+      inset: 0;
+      background: rgba(10,14,23,0.92);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      z-index: 20;
+    }
+    .pulse {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 4px solid var(--primary);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.6); opacity: 0.4; }
+      50% { transform: scale(1.1); opacity: 0.9; }
+      100% { transform: scale(0.6); opacity: 0.4; }
+    }
+
+    .driver-card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 24px 20px;
+      text-align: center;
+      width: 90%;
+      max-width: 380px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+    }
+    .driver-photo {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: #334155;
+      margin: 0 auto 16px;
+      display: grid;
+      place-items: center;
+      font-size: 2.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<div id="s1-splash" class="screen">
+  <div style="flex:1; display:grid; place-items:center;">
+    <div style="text-align:center;">
+      <div class="logo" style="font-size:4.5rem; margin-bottom:8px;">R</div>
+      <h1 style="font-size:2.4rem; font-weight:800; letter-spacing:-2px;">RAPIDO</h1>
+      <p style="color:var(--text-light); margin-top:8px;">Bike • Auto • Cabs</p>
+    </div>
+  </div>
+  <button onclick="goTo('s2-login')" class="confirm-btn">Get Started</button>
+</div>
+
+<div id="s2-login" class="screen hidden">
+  <header><div class="logo">RAPIDO</div></header>
+  <div style="flex:1; display:grid; place-items:center; padding:0 24px; text-align:center;">
+    <div>
+      <h2 style="font-size:1.8rem; margin-bottom:24px;">Enter your phone number</h2>
+      <div style="background:var(--card); border-radius:16px; padding:20px;">
+        <div style="font-size:2.2rem; letter-spacing:8px; font-weight:300; margin:24px 0;">+91 • • • • • • • • • •</div>
+        <p style="color:var(--text-light); font-size:0.9rem;">We'll send you a one-time password (OTP)</p>
+      </div>
+    </div>
+  </div>
+  <button onclick="goTo('s3-home')" class="confirm-btn">Continue</button>
+</div>
+
+<div id="s3-home" class="screen hidden">
+  <header>
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="logo">RAPIDO</div>
+      <i class="fas fa-user-circle" style="font-size:1.8rem; color:var(--primary);"></i>
+    </div>
+  </header>
+
+  <div class="map-container">
+    <div class="fake-map"></div>
+
+    <div class="pickup-drop-card">
+      <div class="location-row pickup">
+        <div class="dot"></div>
+        <div class="loc-text">
+          <div class="loc-title">Current Location</div>
+          <div class="loc-subtitle">Koramangala 5th Block, Bengaluru</div>
+        </div>
+        <i class="fas fa-chevron-right" style="color:var(--text-light);"></i>
+      </div>
+      <div class="location-row drop">
+        <div class="dot"></div>
+        <div class="loc-text">
+          <div class="loc-title">Where to?</div>
+          <div class="loc-subtitle">Search drop location</div>
+        </div>
+        <i class="fas fa-chevron-right" style="color:var(--text-light);"></i>
+      </div>
+    </div>
+
+    <div class="vehicles">
+      <div class="vehicle-btn active" data-type="bike">
+        <i class="fas fa-motorcycle"></i>
+        <div>Bike</div>
+        <div class="fare-estimate">₹89 • 8 min</div>
+      </div>
+      <div class="vehicle-btn" data-type="auto">
+        <i class="fas fa-taxi"></i>
+        <div>Auto</div>
+        <div class="fare-estimate">₹139 • 10 min</div>
+      </div>
+    </div>
+
+    <button id="bookBtn" class="confirm-btn">Find Ride</button>
+  </div>
+
+  <div id="findingDriver" class="finding-driver hidden">
+    <div class="pulse"></div>
+    <h2>Finding you a captain...</h2>
+    <p style="color:var(--text-light);">This usually takes 10–30 seconds</p>
+  </div>
+
+  <div id="driverFound" class="finding-driver hidden" style="background:rgba(10,14,23,0.95);">
+    <div class="driver-card">
+      <div class="driver-photo"><i class="fas fa-user"></i></div>
+      <h2 style="margin-bottom:8px;">Ravi • 4.8 ★</h2>
+      <p style="color:var(--text-light); margin-bottom:20px;">KA 05 AB 1234 • Activa 6G</p>
+      <div style="display:flex; gap:16px; justify-content:center; margin:24px 0;">
+        <button style="background:#2d3748; color:white; border:none; padding:12px 28px; border-radius:50px; font-weight:600;">Chat</button>
+        <button style="background:var(--primary); color:white; border:none; padding:12px 28px; border-radius:50px; font-weight:600;">Call</button>
+      </div>
+      <button onclick="goTo('s3-home')" class="confirm-btn" style="position:static; margin-top:16px; box-shadow:none;">Ride Completed</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function goTo(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+    document.getElementById(screenId).classList.remove('hidden');
+  }
+
+  // Vehicle selection
+  document.querySelectorAll('.vehicle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.vehicle-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Book ride flow
+  document.getElementById('bookBtn').addEventListener('click', () => {
+    document.getElementById('findingDriver').classList.remove('hidden');
+    document.getElementById('bookBtn').disabled = true;
+
+    setTimeout(() => {
+      document.getElementById('findingDriver').classList.add('hidden');
+      document.getElementById('driverFound').classList.remove('hidden');
+    }, 3200);
+  });
+
+  // Start with splash
+  setTimeout(() => goTo('s2-login'), 2200);
+</script>
+</body>
+</html>
