@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morena Travels • Chambal Express</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&amp;display=swap');
+        
+        :root {
+            --primary: #1e3a8a;
+        }
+        
+        .tail-container {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .logo-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .hero-bg {
+            background: linear-gradient(rgba(30, 58, 138, 0.8), rgba(30, 58, 138, 0.9)), 
+                        url('https://picsum.photos/id/1016/2000/1200') center/cover no-repeat;
+        }
+
+        .bus-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .bus-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        }
+
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #1e3a8a;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .modal {
+            animation: modalPop 0.3s ease forwards;
+        }
+        
+        @keyframes modalPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .route-map {
+            background: linear-gradient(to right, #1e3a8a, #3b82f6);
+        }
+    </style>
+</head>
+<body class="tail-container bg-zinc-50 text-zinc-800">
+
+    <!-- NAVBAR -->
+    <nav class="bg-white border-b sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-blue-900 rounded-2xl flex items-center justify-center text-white text-3xl shadow-inner">
+                    🚌
+                </div>
+                <div>
+                    <span class="logo-font text-3xl font-bold tracking-tighter text-blue-950">Morena Travels</span>
+                    <p class="text-[10px] text-blue-600 -mt-1 font-medium">CHAMBAL EXPRESS • मुरैना</p>
+                </div>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="#home" class="nav-link text-zinc-700 hover:text-blue-900">Home</a>
+                <a href="#routes" class="nav-link text-zinc-700 hover:text-blue-900">Routes</a>
+                <a href="#book" class="nav-link text-zinc-700 hover:text-blue-900">Book Now</a>
+                <a href="#passengers" class="nav-link text-zinc-700 hover:text-blue-900">Passenger List</a>
+                <a href="#contact" class="nav-link text-zinc-700 hover:text-blue-900">Contact</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button onclick="toggleLanguage()" 
+                        class="px-5 py-2 text-xs font-semibold border border-blue-900 text-blue-900 rounded-3xl hover:bg-blue-50 transition">
+                    हिंदी / ENGLISH
+                </button>
+                <button onclick="showLoginModal()"
+                        class="px-6 py-2.5 bg-blue-900 text-white text-sm font-semibold rounded-3xl flex items-center gap-2 hover:bg-blue-800 transition">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Login</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header id="home" class="hero-bg h-screen flex items-center text-white">
+        <div class="max-w-7xl mx-auto px-6 pt-20">
+            <div class="max-w-2xl">
+                <h1 class="text-6xl font-bold leading-none tracking-tighter logo-font mb-4">
+                    मुरैना से कालारस<br>सबलगढ़ तक
+                </h1>
+                <p class="text-2xl text-blue-100 mb-10">
+                    Chambal की सबसे भरोसेमंद बस सेवा<br>
+                    Morena • Bagchini • Joura • Kailaras • Kutrawali • Semai • Sabalgarh • Sheopur • Raghunathpur
+                </p>
+                
+                <!-- SEARCH FORM -->
+                <div class="bg-white rounded-3xl shadow-2xl p-2">
+                    <div class="bg-zinc-100 rounded-3xl p-8">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-xs font-medium text-zinc-500 mb-1">FROM</label>
+                                <select id="from" class="w-full bg-white border border-zinc-300 rounded-2xl px-5 py-4 text-lg focus:outline-none focus:border-blue-500">
+                                    <option value="Morena">Morena</option>
+                                    <option value="Bagchini">Bagchini</option>
+                                    <option value="Joura">Joura</option>
+                                    <option value="Kailaras">Kailaras</option>
+                                    <option value="Kutrawali">Kutrawali</option>
+                                    <option value="Semai">Semai</option>
+                                    <option value="Sabalgarh">Sabalgarh</option>
+                                    <option value="Sheopur">Sheopur</option>
+                                    <option value="Raghunathpur">Raghunathpur</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-zinc-500 mb-1">TO</label>
+                                <select id="to" class="w-full bg-white border border-zinc-300 rounded-2xl px-5 py-4 text-lg focus:outline-none focus:border-blue-500">
+                                    <option value="Morena">Morena</option>
+                                    <option value="Bagchini">Bagchini</option>
+                                    <option value="Joura">Joura</option>
+                                    <option value="Kailaras">Kailaras</option>
+                                    <option value="Kutrawali">Kutrawali</option>
+                                    <option value="Semai">Semai</option>
+                                    <option value="Sabalgarh">Sabalgarh</option>
+                                    <option value="Sheopur">Sheopur</option>
+                                    <option value="Raghunathpur">Raghunathpur</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-zinc-500 mb-1">DATE</label>
+                                <input type="date" id="date" value="2026-03-15" 
+                                       class="w-full bg-white border border-zinc-300 rounded-2xl px-5 py-4 text-lg focus:outline-none focus:border-blue-500">
+                            </div>
+                            <div class="flex items-end">
+                                <button onclick="searchBuses()" 
+                                        class="w-full bg-blue-900 hover:bg-blue-800 transition text-white font-semibold text-lg py-5 rounded-3xl flex items-center justify-center gap-3">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    FIND BUSES
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="text-xs text-center mt-6 text-blue-100 flex items-center justify-center gap-2">
+                    <span class="w-3 h-px bg-blue-300"></span>
+                    87+ buses running today in Chambal • 4.9 lakh travelers trust us
+                    <span class="w-3 h-px bg-blue-300"></span>
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- ROUTE MAP -->
+    <div class="route-map py-6 text-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm font-medium">
+                <div class="flex items-center gap-3">
+                    <span class="bg-white text-blue-900 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                    Morena
+                </div>
+                <i class="fa-solid fa-arrow-right"></i>
+                <div>Bagchini</div>
+                <i class="fa-solid fa-arrow-right"></i>
+                <div>Joura</div>
+                <i class="fa-solid fa-arrow-right"></i>
+                <div>Kailaras</div>
+                <i class="fa-solid fa-arrow-right"></i>
+                <div>Kutrawali</div>
+                <i class="fa-solid fa-arrow-right"></i>
+                <div>Semai</div>
+                <i class="fa-solid fa-arrow-right"></i>
+                <div>Sabalgarh</div>
+                <i class="fa-solid fa-arrow-right"></i>
+                <div>Sheopur</div>
+                <i class="fa-solid fa-arrow-right"></i>
+                <div>Raghunathpur</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AVAILABLE BUSES SECTION -->
+    <section id="routes" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <span class="px-6 py-2 bg-emerald-100 text-emerald-700 text-sm font-semibold rounded-3xl">LIVE • चंबल रूट</span>
+                    <h2 class="text-5xl font-bold tracking-tighter logo-font mt-3">Today's Buses on Your Route</h2>
+                </div>
+                <p onclick="searchBuses()" class="text-blue-600 hover:underline cursor-pointer flex items-center gap-2 text-sm font-medium">
+                    View all <i class="fa-solid fa-arrow-right"></i>
+                </p>
+            </div>
+
+            <div id="bus-results" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- PASSENGER LIST FROM PAPER (exactly same as before) -->
+    <section id="passengers" class="py-20 bg-zinc-900 text-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-between items-center mb-12">
+                <div class="flex items-center gap-4">
+                    <div class="text-amber-400">
+                        <i class="fa-solid fa-list-check text-5xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-amber-400 text-sm tracking-[4px] font-medium">ORIGINAL PAPER DATA</span>
+                        <h2 class="logo-font text-5xl font-bold tracking-tighter">Today's Passenger Manifest</h2>
+                    </div>
+                </div>
+                <div class="hidden md:block text-right">
+                    <p class="text-zinc-400 text-sm">Digitized exactly from your handwritten sheet</p>
+                    <p class="text-emerald-400 font-medium">• 10 passengers • Total Rs. 30 collected</p>
+                </div>
+            </div>
+
+            <div class="bg-zinc-800 rounded-3xl overflow-hidden border border-zinc-700">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-zinc-700 bg-zinc-950">
+                            <th class="text-left py-7 px-10 font-medium text-amber-300 text-sm tracking-widest">नाम से (NAME)</th>
+                            <th class="text-left py-7 px-10 font-medium text-amber-300 text-sm tracking-widest">कंटेनर / अन्य (DETAILS)</th>
+                            <th class="text-right py-7 px-10 font-medium text-amber-300 text-sm tracking-widest">राशि (Rs.)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-zinc-300 handwritten divide-y divide-zinc-700">
+                        <tr>
+                            <td class="py-6 px-10">ट्रेवल कं</td>
+                            <td class="py-6 px-10">अन्य</td>
+                            <td class="py-6 px-10 text-right font-semibold text-emerald-400">10</td>
+                        </tr>
+                        <tr>
+                            <td class="py-6 px-10">शागर सिंह</td>
+                            <td class="py-6 px-10">-</td>
+                            <td class="py-6 px-10 text-right font-semibold text-emerald-400">20</td>
+                        </tr>
+                        <tr>
+                            <td class="py-6 px-10">उमेश</td>
+                            <td class="py-6 px-10">-</td>
+                            <td class="py-6 px-10 text-right">—</td>
+                        </tr>
+                        <tr>
+                            <td class="py-6 px-10">राजेश</td>
+                            <td class="py-6 px-10">-</td>
+                            <td class="py-6 px-10 text-right">—</td>
+                        </tr>
+                        <tr>
+                            <td class="py-6 px-10">बजरंग</td>
+                            <td class="py-6 px-10">-</td>
+                            <td class="py-6 px-10 text-right">—</td>
+                        </tr>
+                        <tr>
+                            <td class="py-6 px-10">नरेश</td>
+                            <td class="py-6 px-10">-</td>
+                            <td class="py-6 px-10 text-right">—</td>
+                        </tr>
+                        <tr>
+                            <td class="py-6 px-10">गंगू बाई</td>
+                            <td class="py-6 px-10">-</td>
+                            <td class="py-6 px-10 text-right">—</td>
+                        </tr>
+                        <tr>
+                            <td class="py-6 px-10">हरि रघु</td>
+                            <td class="py-6 px-10">-</td>
+                            <td class="py-6 px-10 text-right">—</td>
+                        </tr>
+                        <tr>
+                            <td class="py-6 px-10">रघु बाई</td>
+                            <td class="py-6 px-10">-</td>
+                            <td class="py-6 px-10 text-right">—</td>
+                        </tr>
+                        <tr>
+                            <td class="py-6 px-10">राजेश</td>
+                            <td class="py-6 px-10">-</td>
+                            <td class="py-6 px-10 text-right">—</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-zinc-100 rounded-3xl p-10 group hover:bg-blue-900 hover:text-white transition-all">
+                    <div class="text-6xl mb-8">🛡️</div>
+                    <h3 class="text-3xl font-semibold mb-3">Safe &amp; Secure</h3>
+                    <p class="text-zinc-600 group-hover:text-blue-100">GPS + Female friendly + Chambal Police patrolling</p>
+                </div>
+                <div class="bg-zinc-100 rounded-3xl p-10 group hover:bg-blue-900 hover:text-white transition-all">
+                    <div class="text-6xl mb-8">🛏️</div>
+                    <h3 class="text-3xl font-semibold mb-3">AC Mini Bus</h3>
+                    <p class="text-zinc-600 group-hover:text-blue-100">Charging point, clean seats, water bottle free</p>
+                </div>
+                <div class="bg-zinc-100 rounded-3xl p-10 group hover:bg-blue-900 hover:text-white transition-all">
+                    <div class="text-6xl mb-8">⏱️</div>
+                    <h3 class="text-3xl font-semibold mb-3">On Time Guarantee</h3>
+                    <p class="text-zinc-600 group-hover:text-blue-100">₹20 compensation if late by 30 mins</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-blue-950 text-blue-100 py-16">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-5 gap-10">
+            <div class="md:col-span-2">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-blue-950 text-4xl">🚌</div>
+                    <span class="logo-font text-4xl font-bold text-white">Morena Travels</span>
+                </div>
+                <p class="max-w-xs text-blue-300">Chambal की सबसे पुरानी और भरोसेमंद बस सेवा। Morena से Sheopur तक हर रोज़ 87+ बसें।</p>
+                <div class="mt-8 flex gap-6 text-2xl">
+                    <i class="fa-brands fa-whatsapp hover:text-white cursor-pointer"></i>
+                    <i class="fa-brands fa-instagram hover:text-white cursor-pointer"></i>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="font-semibold text-white mb-6">Quick Links</h4>
+                <ul class="space-y-3 text-sm">
+                    <li>Book Ticket</li>
+                    <li>Live Tracking</li>
+                    <li>Cancel Ticket</li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="font-semibold text-white mb-6">Our Routes</h4>
+                <ul class="space-y-3 text-sm">
+                    <li>Morena ↔ Joura</li>
+                    <li>Joura ↔ Kailaras</li>
+                    <li>Sabalgarh ↔ Sheopur</li>
+                    <li>Morena ↔ Raghunathpur</li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="font-semibold text-white mb-6">Contact Us</h4>
+                <div class="text-sm space-y-4">
+                    <p>📍 Bus Stand, Morena, Madhya Pradesh - 476001</p>
+                    <p>📞 +91 98765 43210</p>
+                    <p>✉️ morenatravels@gmail.com</p>
+                    <p class="pt-6 text-xs text-blue-400">© 2026 Morena Travels • Chambal Express</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- BOOKING MODAL -->
+    <div id="bookingModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[999]">
+        <div class="modal bg-white rounded-3xl max-w-lg w-full mx-4 overflow-hidden">
+            <div class="px-8 py-6 border-b flex items-center justify-between bg-zinc-50">
+                <h3 class="text-2xl font-semibold" id="modalBusName">Book Ticket</h3>
+                <button onclick="closeModal()" class="text-3xl leading-none text-zinc-400 hover:text-zinc-600">×</button>
+            </div>
+            
+            <div class="p-8 space-y-6">
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="text-xs text-zinc-500">Passenger Name</label>
+                        <input id="passengerName" type="text" value="Vitthal Sharma" 
+                               class="w-full mt-2 border border-zinc-300 rounded-2xl px-5 py-4 focus:outline-none focus:border-blue-600">
+                    </div>
+                    <div>
+                        <label class="text-xs text-zinc-500">Seat Number</label>
+                        <input type="text" value="C7" 
+                               class="w-full mt-2 border border-zinc-300 rounded-2xl px-5 py-4 focus:outline-none focus:border-blue-600">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="text-xs text-zinc-500">Phone Number</label>
+                    <input type="tel" value="+91 9876543210" 
+                           class="w-full mt-2 border border-zinc-300 rounded-2xl px-5 py-4 focus:outline-none focus:border-blue-600">
+                </div>
+                
+                <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 text-sm">
+                    <div class="flex justify-between font-medium">
+                        <span>Base Fare</span>
+                        <span id="modalFare">₹150</span>
+                    </div>
+                    <div class="flex justify-between text-emerald-600 mt-1">
+                        <span>Convenience Fee</span>
+                        <span>₹10</span>
+                    </div>
+                    <div class="h-px bg-emerald-200 my-4"></div>
+                    <div class="flex justify-between text-lg font-semibold text-emerald-700">
+                        <span>Total</span>
+                        <span id="modalTotal">₹160</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-8 bg-zinc-50 flex gap-4">
+                <button onclick="closeModal()" 
+                        class="flex-1 py-6 border border-zinc-300 rounded-3xl font-semibold">Cancel</button>
+                <button onclick="confirmBooking()" 
+                        class="flex-1 py-6 bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-3xl font-semibold shadow-inner">
+                    CONFIRM BOOKING • PAY ₹160
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const buses = [
+            {
+                id: 1,
+                name: "Chambal Express AC",
+                from: "Morena",
+                to: "Joura",
+                departure: "06:30",
+                arrival: "08:00",
+                duration: "1h 30m",
+                price: 150,
+                seats: 18
+            },
+            {
+                id: 2,
+                name: "Kailaras Special",
+                from: "Joura",
+                to: "Kailaras",
+                departure: "09:15",
+                arrival: "10:45",
+                duration: "1h 30m",
+                price: 120,
+                seats: 12
+            },
+            {
+                id: 3,
+                name: "Sabalgarh Mini Bus",
+                from: "Sabalgarh",
+                to: "Sheopur",
+                departure: "11:00",
+                arrival: "13:30",
+                duration: "2h 30m",
+                price: 180,
+                seats: 22
+            },
+            {
+                id: 4,
+                name: "Raghunathpur Night",
+                from: "Morena",
+                to: "Raghunathpur",
+                departure: "19:45",
+                arrival: "22:15",
+                duration: "2h 30m",
+                price: 200,
+                seats: 9
+            },
+            {
+                id: 5,
+                name: "Bagchini Local",
+                from: "Bagchini",
+                to: "Kutrawali",
+                departure: "07:00",
+                arrival: "08:20",
+                duration: "1h 20m",
+                price: 80,
+                seats: 15
+            }
+        ]
+        
+        function renderBuses(filteredBuses) {
+            const container = document.getElementById("bus-results")
+            container.innerHTML = ""
+            
+            if (filteredBuses.length === 0) {
+                container.innerHTML = `<div class="col-span-3 text-center py-20 text-zinc-400">इस रूट पर आज कोई बस नहीं। दूसरा शहर चुनें।</div>`
+                return
+            }
+            
+            filteredBuses.forEach(bus => {
+                const card = document.createElement("div")
+                card.className = "bus-card bg-white border border-zinc-100 rounded-3xl overflow-hidden"
+                card.innerHTML = `
+                    <div class="px-7 pt-7 pb-5">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">${bus.name}</div>
+                                <div class="text-xs text-emerald-500 font-medium mt-1">• ${bus.seats} सीटें बाकी</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-4xl font-bold text-blue-900">₹${bus.price}</div>
+                                <div class="text-xs text-zinc-400">प्रति व्यक्ति</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8 flex justify-between items-center">
+                            <div>
+                                <div class="text-xs text-zinc-400">DEPARTURE</div>
+                                <div class="text-3xl font-semibold">${bus.departure}</div>
+                                <div class="text-sm text-zinc-600">${bus.from}</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-xs font-medium text-amber-500">${bus.duration}</div>
+                                <div class="h-px w-16 bg-gradient-to-r from-transparent via-zinc-300 to-transparent my-2"></div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-xs text-zinc-400">ARRIVAL</div>
+                                <div class="text-3xl font-semibold">${bus.arrival}</div>
+                                <div class="text-sm text-zinc-600">${bus.to}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t px-7 py-5 flex items-center justify-between bg-zinc-50">
+                        <div onclick="bookBus(${bus.id})" 
+                             class="cursor-pointer bg-blue-900 text-white px-8 py-3.5 rounded-3xl text-sm font-semibold hover:bg-blue-800 transition flex items-center gap-2">
+                            BOOK NOW
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                        <div class="text-xs text-zinc-400">Live • 4.98 ★</div>
+                    </div>
+                `
+                container.appendChild(card)
+            })
+        }
+        
+        window.searchBuses = function() {
+            const from = document.getElementById("from").value
+            const to = document.getElementById("to").value
+            
+            const filtered = buses.filter(bus => 
+                bus.from === from && bus.to === to
+            )
+            
+            const result = filtered.length > 0 ? filtered : buses
+            renderBuses(result)
+            document.getElementById("routes").scrollIntoView({ behavior: "smooth" })
+        }
+        
+        let currentBus = {}
+        
+        window.bookBus = function(id) {
+            currentBus = buses.find(b => b.id === id)
+            document.getElementById("modalBusName").textContent = `${currentBus.name} • ${currentBus.from} → ${currentBus.to}`
+            document.getElementById("modalFare").textContent = `₹${currentBus.price}`
+            document.getElementById("modalTotal").textContent = `₹${currentBus.price + 10}`
+            
+            document.getElementById("bookingModal").classList.remove("hidden")
+            document.getElementById("bookingModal").classList.add("flex")
+        }
+        
+        window.closeModal = function() {
+            const modal = document.getElementById("bookingModal")
+            modal.classList.add("hidden")
+            modal.classList.remove("flex")
+        }
+        
+        window.confirmBooking = function() {
+            const name = document.getElementById("passengerName").value || "यात्री"
+            alert(`✅ बुकिंग कन्फर्म!\n\nयात्री: ${name}\nबस: ${currentBus.name}\nराशि: ₹${currentBus.price + 10}\n\nटिकट WhatsApp पर भेज दिया गया।\nधन्यवाद! Morena Travels`)
+            closeModal()
+        }
+        
+        window.showLoginModal = function() {
+            alert("🔐 Welcome back Vitthal Sharma!\n( Logged in successfully )")
+        }
+        
+        window.toggleLanguage = function() {
+            alert("🌍 Language switched (Demo)")
+        }
+        
+        function init() {
+            renderBuses(buses)
+            console.log('%c✅ Morena Travels Website READY!\nAll Chambal routes (Morena-Bagchini-Joura-Kailaras-Kutrawali-Semai-Sabalgarh-Sheopur-Raghunathpur) added exactly as requested.', 'color:#1e3a8a; font-family:monospace')
+        }
+        
+        window.onload = init
+    </script>
+</body>
+</html> 
