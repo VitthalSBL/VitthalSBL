@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Smart Chatbot</title>
+
+<style>
+
+body{
+font-family:Segoe UI;
+margin:0;
+background:linear-gradient(135deg,#1f1c2c,#928dab);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.chat-app{
+width:420px;
+height:620px;
+background:white;
+border-radius:18px;
+box-shadow:0 15px 40px rgba(0,0,0,.3);
+display:flex;
+flex-direction:column;
+overflow:hidden;
+}
+
+.header{
+background:#4f46e5;
+color:white;
+padding:16px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.header h3{
+margin:0;
+font-weight:600;
+}
+
+.chat-box{
+flex:1;
+padding:15px;
+overflow-y:auto;
+background:#f3f4f6;
+}
+
+.message{
+max-width:75%;
+padding:12px 15px;
+margin:10px 0;
+border-radius:14px;
+font-size:14px;
+line-height:1.4;
+}
+
+.user{
+background:#4f46e5;
+color:white;
+margin-left:auto;
+}
+
+.bot{
+background:#e5e7eb;
+}
+
+.typing{
+font-size:12px;
+color:#666;
+margin-top:5px;
+}
+
+.input-area{
+display:flex;
+border-top:1px solid #ddd;
+}
+
+input{
+flex:1;
+border:none;
+padding:14px;
+font-size:14px;
+outline:none;
+}
+
+button{
+background:#4f46e5;
+color:white;
+border:none;
+padding:0 18px;
+cursor:pointer;
+font-weight:bold;
+}
+
+button:hover{
+background:#4338ca;
+}
+
+.suggestions{
+display:flex;
+flex-wrap:wrap;
+gap:6px;
+padding:10px;
+background:#fafafa;
+border-top:1px solid #eee;
+}
+
+.suggestions span{
+background:#e0e7ff;
+padding:6px 10px;
+border-radius:12px;
+font-size:12px;
+cursor:pointer;
+}
+
+.dark{
+background:#111827;
+color:white;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="chat-app">
+
+<div class="header">
+<h3>AI Smart Assistant</h3>
+<button onclick="toggleTheme()">🌙</button>
+</div>
+
+<div id="chatBox" class="chat-box"></div>
+
+<div class="suggestions">
+<span onclick="quickMsg(this)">Hello</span>
+<span onclick="quickMsg(this)">Pricing</span>
+<span onclick="quickMsg(this)">Support</span>
+<span onclick="quickMsg(this)">Services</span>
+</div>
+
+<div class="input-area">
+<input id="input" placeholder="Type a message...">
+<button onclick="send()">Send</button>
+</div>
+
+</div>
+
+<script>
+
+let positiveWords=["good","great","awesome","love","excellent","happy"]
+let negativeWords=["bad","sad","angry","terrible","problem","issue"]
+
+let replies={
+positive:[
+"😊 That's great to hear!",
+"Glad you like it!",
+"Thanks for the positive feedback!"
+],
+negative:[
+"😔 I'm sorry about that.",
+"Let me help solve the issue.",
+"We'll fix this as soon as possible."
+],
+neutral:[
+"How can I help you today?",
+"Tell me more about your request.",
+"I'm here to assist you."
+]
+}
+
+function detectSentiment(text){
+
+text=text.toLowerCase()
+
+for(let w of positiveWords){
+if(text.includes(w)) return "positive"
+}
+
+for(let w of negativeWords){
+if(text.includes(w)) return "negative"
+}
+
+return "neutral"
+
+}
+
+function random(arr){
+return arr[Math.floor(Math.random()*arr.length)]
+}
+
+function addMessage(text,type){
+
+let msg=document.createElement("div")
+msg.className="message "+type
+msg.innerText=text
+
+let chat=document.getElementById("chatBox")
+chat.appendChild(msg)
+
+chat.scrollTop=chat.scrollHeight
+
+saveChat()
+
+}
+
+function botTyping(){
+
+let typing=document.createElement("div")
+typing.className="typing"
+typing.id="typing"
+typing.innerText="Bot is typing..."
+
+chatBox.appendChild(typing)
+
+}
+
+function removeTyping(){
+let t=document.getElementById("typing")
+if(t) t.remove()
+}
+
+function send(){
+
+let input=document.getElementById("input")
+let text=input.value.trim()
+
+if(text==="") return
+
+addMessage(text,"user")
+
+input.value=""
+
+botTyping()
+
+setTimeout(()=>{
+
+removeTyping()
+
+let sentiment=detectSentiment(text)
+
+let reply=random(replies[sentiment])
+
+addMessage(reply,"bot")
+
+},900)
+
+}
+
+document.getElementById("input")
+.addEventListener("keypress",e=>{
+if(e.key==="Enter") send()
+})
+
+function quickMsg(el){
+document.getElementById("input").value=el.innerText
+send()
+}
+
+function toggleTheme(){
+document.body.classList.toggle("dark")
+}
+
+function saveChat(){
+localStorage.setItem("chatHistory",
+document.getElementById("chatBox").innerHTML)
+}
+
+window.onload=()=>{
+let history=localStorage.getItem("chatHistory")
+if(history){
+document.getElementById("chatBox").innerHTML=history
+}
+}
+
+</script>
+
+</body>
+</html>
